@@ -4,7 +4,7 @@ data class Chapter(
     val index: Int,
     val title: Title,
     val content: Content,
-    val place: Place,
+    val place: PlaceName,
     val pov: Character,
 ) {
     data class Content(val text: String, val imageLinks: List<String>)
@@ -14,4 +14,7 @@ data class Chapter(
 
     @JvmInline
     value class Character(val name: String)
+
+    @JvmInline
+    value class PlaceName(val name: String)
 }

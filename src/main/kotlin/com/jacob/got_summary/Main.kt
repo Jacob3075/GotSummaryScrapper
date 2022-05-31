@@ -8,7 +8,7 @@ fun main() {
         { ChapterLink("$BASE_URL$it") },
     )
 
-    println("booksWithLinks = $booksWithLinks")
+    booksWithLinks.values.first().take(3).mapIndexed(::parseChapterSummary).forEach(::println)
 }
 
 @JvmInline
