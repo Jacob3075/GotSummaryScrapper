@@ -24,5 +24,3 @@ w
 G.idea/sonarlint/issuestore/f/b/fbe448ebfc3eb2d4e308f6b8b043666f5b57235e,5/2/52114fdaa426e9b83a3c5df4e11c4f0ebbcd814b
 w
 G.idea/sonarlint/issuestore/5/b/5bbfa66edb4db3c7c33c5181f43510990d3307f9,f/7/f7819ea138c33fec28e7e536cb2de34db38fc121
-g
-7src/main/kotlin/com/jacob/got_summary/models/Content.kt,c/3/c30c3d0d65058a92156be0d96f65f3cbdc7c1302
