@@ -8,10 +8,6 @@
 gradlew,5/b/5bbfa66edb4db3c7c33c5181f43510990d3307f9
 X
 (gradle/wrapper/gradle-wrapper.properties,f/b/fbe448ebfc3eb2d4e308f6b8b043666f5b57235e
-A
-gradle.properties,2/a/2afbb999f001938c88fa43fc2ef52abf0f8213e4
-C
-settings.gradle.kts,7/4/749edfcc96398253e5b3416184e95c46621da850
 w
 G.idea/sonarlint/issuestore/a/5/a5cc2925ca8258af241be7e5b0381edf30266302,e/d/ed67eb178d523a4b3f117dcbe0eda5196367ceec
 w
@@ -36,8 +32,6 @@ w
 G.idea/sonarlint/issuestore/e/d/ed67eb178d523a4b3f117dcbe0eda5196367ceec,8/a/8a6dae537be9f47878c6964c6ee40cab0ca75e28
 w
 G.idea/sonarlint/issuestore/5/1/516e730a14e71f02fa73f3acd6dc7cea9a9fe002,9/9/99437a72e53e3372cda2bff4e9e442b296b81b2e
-@
-build.gradle.kts,d/b/dbcff70658daf80b53ce624f6adcaa529df5ed8d
 e
 5src/main/kotlin/com/jacob/got_summary/models/Place.kt,c/3/c34933576d6152c0bd2f897d53ec05a139b74235
 p

@@ -1,5 +1,8 @@
 package com.jacob.got_summary
 
+import com.jacob.got_summary.formatters.TextFormatter
+import com.jacob.got_summary.writer.FileWriter
+
 fun main() {
     val links = getSavedLinks()
 
@@ -8,7 +11,10 @@ fun main() {
         { ChapterLink("$BASE_URL$it") },
     )
 
-    booksWithLinks.values.first().take(3).mapIndexed(::parseChapterSummary).forEach(::println)
+    val fileWriter = FileWriter("Sample.txt", formatter = TextFormatter())
+
+    booksWithLinks.values.first().take(3).asSequence().mapIndexed(::parseChapterSummary)
+        .forEach(fileWriter::appendDataToFile)
 }
 
 @JvmInline

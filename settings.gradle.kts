@@ -1,3 +1,2 @@
 
-rootProject.name = "GotSummaryParser"
-
+rootProject.name = "GotSummaryScrapper"
