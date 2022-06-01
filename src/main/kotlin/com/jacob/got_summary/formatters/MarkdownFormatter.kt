@@ -9,4 +9,8 @@ class MarkdownFormatter : Formatter {
 	override fun formatData(data: Chapter): String {
 		TODO("Not yet implemented")
 	}
+
+	override fun formatData(data: List<Chapter>): String {
+		TODO("Not yet implemented")
+	}
 }

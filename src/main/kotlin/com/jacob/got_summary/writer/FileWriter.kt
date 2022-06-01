@@ -12,4 +12,6 @@ class FileWriter(
 	private val file = File("$directoryPath$fileName.${formatter.fileExtension}")
 
 	fun appendDataToFile(data: Chapter) = file.appendText(formatter.formatData(data))
+
+	fun writeDataToFile(data: List<Chapter>) = file.writeText(formatter.formatData(data))
 }

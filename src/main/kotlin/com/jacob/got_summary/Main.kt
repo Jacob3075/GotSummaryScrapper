@@ -1,7 +1,7 @@
 package com.jacob.got_summary
 
 import com.jacob.got_summary.formatters.Formatter
-import com.jacob.got_summary.formatters.TextFormatter
+import com.jacob.got_summary.formatters.JsonFormatter
 import com.jacob.got_summary.scrappers.chapter_links.GetChapterLinks
 import com.jacob.got_summary.scrappers.chapter_links.GetSavedChapterLinks
 import com.jacob.got_summary.scrappers.chapter_summary.GetChapterSummary
@@ -12,7 +12,7 @@ fun main() {
 	Main(
 		getChapterLinks = GetSavedChapterLinks(),
 		getChapterSummary = ScrapeChapterSummary(),
-		formatter = TextFormatter()
+		formatter = JsonFormatter(),
 	).createSummaries()
 }
 
@@ -34,7 +34,8 @@ class Main(
 				.take(3)
 				.asSequence()
 				.mapIndexed(getChapterSummary::getChapterSummary)
-				.forEach(fileWriter::appendDataToFile)
+				.toList()
+				.let(fileWriter::writeDataToFile)
 	}
 
 	private fun extractBookName(it: String) = it.split("/")

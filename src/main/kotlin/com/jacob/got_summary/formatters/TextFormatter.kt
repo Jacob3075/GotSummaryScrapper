@@ -14,4 +14,7 @@ class TextFormatter : Formatter {
         |${"-".repeat(100)}
         |
         """.trimMargin()
+
+	override fun formatData(data: List<Chapter>): String =
+		data.joinToString(transform = ::formatData)
 }
