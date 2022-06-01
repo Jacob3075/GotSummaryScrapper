@@ -5,11 +5,11 @@ import com.jacob.got_summary.models.Chapter
 import java.io.File
 
 class FileWriter(
-    fileName: String,
-    directoryPath: String = "output/",
-    private val formatter: Formatter,
+	fileName: String,
+	directoryPath: String = "output/",
+	private val formatter: Formatter,
 ) {
-    private val file = File("$directoryPath$fileName.${formatter.fileExtension}")
+	private val file = File("$directoryPath$fileName.${formatter.fileExtension}")
 
-    fun appendDataToFile(data: Chapter) = file.appendText(formatter.formatData(data))
+	fun appendDataToFile(data: Chapter) = file.appendText(formatter.formatData(data))
 }
