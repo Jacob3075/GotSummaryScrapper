@@ -1,5 +1,6 @@
 package com.jacob.got_summary
 
+import com.jacob.got_summary.Constants.BASE_URL
 import com.jacob.got_summary.models.Chapter
 import it.skrape.core.htmlDocument
 import it.skrape.fetcher.HttpFetcher

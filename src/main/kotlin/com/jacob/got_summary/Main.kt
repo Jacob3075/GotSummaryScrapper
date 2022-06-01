@@ -1,10 +1,12 @@
 package com.jacob.got_summary
 
+import com.jacob.got_summary.Constants.BASE_URL
 import com.jacob.got_summary.formatters.TextFormatter
+import com.jacob.got_summary.scrappers.chapter_links.GetSavedChapterLinks
 import com.jacob.got_summary.writer.FileWriter
 
 fun main() {
-    val links = getSavedLinks()
+    val links = GetSavedChapterLinks().getLinks()
 
     val booksWithLinks = links.groupBy(
         { it.split("/").last().split("-").first().replace("_", " ").let(::BookName) },
