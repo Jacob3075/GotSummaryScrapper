@@ -1,5 +1,6 @@
 package com.jacob.got_summary
 
+import com.jacob.got_summary.formatters.Formatter
 import com.jacob.got_summary.formatters.TextFormatter
 import com.jacob.got_summary.scrappers.chapter_links.GetChapterLinks
 import com.jacob.got_summary.scrappers.chapter_links.GetSavedChapterLinks
@@ -18,7 +19,7 @@ fun main() {
 class Main(
     private val getChapterLinks: GetChapterLinks,
     private val getChapterSummary: GetChapterSummary,
-    private val formatter: TextFormatter,
+    private val formatter: Formatter,
 ) {
     fun createSummaries() {
         val links = getChapterLinks.getLinks()
@@ -27,7 +28,7 @@ class Main(
             ::extractBookName,
         ) { ChapterLink("${Constants.BASE_URL}$it") }
 
-        val fileWriter = FileWriter("Sample.txt", formatter = formatter)
+        val fileWriter = FileWriter("Sample", formatter = formatter)
 
         booksWithLinks.values.first().take(3).asSequence()
             .mapIndexed(getChapterSummary::getChapterSummary)

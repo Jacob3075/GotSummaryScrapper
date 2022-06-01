@@ -4,4 +4,5 @@ import com.jacob.got_summary.models.Chapter
 
 interface Formatter {
     fun formatData(data: Chapter): String
+    val fileExtension: String
 }

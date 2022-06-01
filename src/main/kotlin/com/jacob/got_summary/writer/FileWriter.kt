@@ -9,7 +9,7 @@ class FileWriter(
     directoryPath: String = "output/",
     private val formatter: Formatter,
 ) {
-    private val file = File("$directoryPath$fileName")
+    private val file = File("$directoryPath$fileName.${formatter.fileExtension}")
 
     fun appendDataToFile(data: Chapter) = file.appendText(formatter.formatData(data))
 }
