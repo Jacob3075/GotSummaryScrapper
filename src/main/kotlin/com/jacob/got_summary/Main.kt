@@ -1,22 +1,41 @@
 package com.jacob.got_summary
 
-import com.jacob.got_summary.Constants.BASE_URL
 import com.jacob.got_summary.formatters.TextFormatter
+import com.jacob.got_summary.scrappers.chapter_links.GetChapterLinks
 import com.jacob.got_summary.scrappers.chapter_links.GetSavedChapterLinks
+import com.jacob.got_summary.scrappers.chapter_summary.GetChapterSummary
+import com.jacob.got_summary.scrappers.chapter_summary.ScrapeChapterSummary
 import com.jacob.got_summary.writer.FileWriter
 
 fun main() {
-    val links = GetSavedChapterLinks().getLinks()
+    Main(
+        getChapterLinks = GetSavedChapterLinks(),
+        getChapterSummary = ScrapeChapterSummary(),
+        formatter = TextFormatter()
+    ).createSummaries()
+}
 
-    val booksWithLinks = links.groupBy(
-        { it.split("/").last().split("-").first().replace("_", " ").let(::BookName) },
-        { ChapterLink("$BASE_URL$it") },
-    )
+class Main(
+    private val getChapterLinks: GetChapterLinks,
+    private val getChapterSummary: GetChapterSummary,
+    private val formatter: TextFormatter,
+) {
+    fun createSummaries() {
+        val links = getChapterLinks.getLinks()
 
-    val fileWriter = FileWriter("Sample.txt", formatter = TextFormatter())
+        val booksWithLinks = links.groupBy(
+            ::extractBookName,
+        ) { ChapterLink("${Constants.BASE_URL}$it") }
 
-    booksWithLinks.values.first().take(3).asSequence().mapIndexed(::parseChapterSummary)
-        .forEach(fileWriter::appendDataToFile)
+        val fileWriter = FileWriter("Sample.txt", formatter = formatter)
+
+        booksWithLinks.values.first().take(3).asSequence()
+            .mapIndexed(getChapterSummary::getChapterSummary)
+            .forEach(fileWriter::appendDataToFile)
+    }
+
+    private fun extractBookName(it: String) =
+        it.split("/").last().split("-").first().replace("_", " ").let(::BookName)
 }
 
 @JvmInline
