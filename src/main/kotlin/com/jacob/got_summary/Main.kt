@@ -1,6 +1,7 @@
 package com.jacob.got_summary
 
-import com.jacob.got_summary.formatters.JsonFormatter
+import com.jacob.got_summary.formatters.MarkdownFormatter
+import com.jacob.got_summary.models.Book
 import com.jacob.got_summary.scrappers.chapter_links.GetChapterLinks
 import com.jacob.got_summary.scrappers.chapter_links.GetSavedChapterLinks
 import com.jacob.got_summary.scrappers.chapter_summary.GetChapterSummary
@@ -13,7 +14,7 @@ fun main() {
 	Main(
 		getChapterLinks = GetSavedChapterLinks(),
 		getChapterSummary = ScrapeChapterSummary(),
-		fileWriter = FileWriter("Sample", formatter = JsonFormatter()),
+		fileWriter = FileWriter(formatter = MarkdownFormatter()),
 	).createSummaries()
 }
 
@@ -30,14 +31,17 @@ class Main(
 		) { ChapterLink("${Constants.BASE_URL}$it") }
 
 		runBlocking(Dispatchers.IO) {
-			booksWithLinks.values.first()
-					.take(6)
-					.mapIndexedParallel(getChapterSummary::getChapterSummary)
-					.let(fileWriter::writeDataToFile)
-		}
+			booksWithLinks.forEach { (bookName, chapterLinks) ->
+				chapterLinks.dropLast(1)
+						.mapIndexedParallelChunked(6, getChapterSummary::getChapterSummary)
+						.let {
+							fileWriter.newFile(bookName.name)
+							fileWriter.writeDataToFile(it)
+						}
 
-//		val chapterSummary = (getChapterSummary as GetSavedChapterSummary).getChapterSummary()
-//		fileWriter.writeDataToFile(chapterSummary)
+				TODO()
+			}
+		}
 	}
 
 	private fun extractBookName(it: String) = it.split("/")
