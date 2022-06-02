@@ -6,12 +6,16 @@ import kotlinx.serialization.Serializable
 data class Chapter(
 	val index: Int,
 	val title: Title,
-	val content: Content,
+	val content: List<Content>,
 	val place: PlaceName,
 	val pov: Character,
 ) {
 	@Serializable
-	data class Content(val text: List<String>, val imageLinks: List<String>)
+	sealed class Content {
+		data class Text(val text: String) : Content()
+		data class Image(val caption: String, val link: String) : Content()
+		data class Quote(val text: String) : Content()
+	}
 
 	@Serializable
 	@JvmInline

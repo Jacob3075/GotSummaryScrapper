@@ -11,7 +11,7 @@ class TextFormatter : Formatter {
         |${data.index}. ${data.title.name} 
         |${data.pov.name} at ${data.place.name} 
         |
-        |${data.content.text.joinToString("\n")}
+        |${data.content}
         |${"-".repeat(100)}
         |
         """.trimMargin()

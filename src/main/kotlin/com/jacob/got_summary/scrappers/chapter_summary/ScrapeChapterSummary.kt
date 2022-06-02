@@ -1,15 +1,14 @@
 package com.jacob.got_summary.scrappers.chapter_summary
 
 import com.jacob.got_summary.ChapterLink
-import com.jacob.got_summary.Constants.BASE_URL
 import com.jacob.got_summary.models.Chapter
+import com.jacob.got_summary.models.Chapter.Content
 import it.skrape.core.htmlDocument
 import it.skrape.fetcher.HttpFetcher
 import it.skrape.fetcher.response
 import it.skrape.fetcher.skrape
 import it.skrape.selects.CssSelector
 import it.skrape.selects.DocElement
-import it.skrape.selects.eachSrc
 import it.skrape.selects.html5.*
 import it.skrape.selects.text
 
@@ -22,9 +21,8 @@ class ScrapeChapterSummary : GetChapterSummary {
 			}
 
 			lateinit var title: String
-			lateinit var contentText: List<String>
-			lateinit var imageLinks: List<String>
 			lateinit var placeName: String
+			lateinit var contents: List<Content>
 			lateinit var pov: String
 
 			response {
@@ -48,8 +46,18 @@ class ScrapeChapterSummary : GetChapterSummary {
 					div {
 						withClass = "mw-parser-output"
 						findFirst {
-							contentText = getContentTextFromParaTag()
-							imageLinks = getImagesFromSummary()
+
+							contents =
+								children { this }.drop(1)
+										.takeWhile { "table" !in it.tagName }
+										.mapNotNull {
+											when (it.tagName) {
+												"p" -> Content.Text(it.text)
+												"div" -> it.getImageDetailsFromElement()
+												"blockquote" -> Content.Quote(it.text)
+												else -> null
+											}
+										}
 						}
 					}
 				}
@@ -58,24 +66,19 @@ class ScrapeChapterSummary : GetChapterSummary {
 			Chapter(
 				index = index,
 				title = Chapter.Title(title),
-				content = Chapter.Content(contentText, imageLinks),
+				content = contents,
 				place = Chapter.PlaceName(placeName),
 				pov = Chapter.Character(pov)
 			)
 		}
 
-	private fun DocElement.getContentTextFromParaTag() = p {
-		findAll {
-			takeWhile { "Appearing" !in it.text }.map {
-				Regex("\\[N \\d+]").replace(it.text, "")
-			}
-		}
-	}
 
-	private fun DocElement.getImagesFromSummary() = img {
-		findAll {
-			eachSrc.map { "$BASE_URL$it" }
-		}
+	private fun DocElement.getImageDetailsFromElement(): Content.Image? = when {
+		eachImage.values.isEmpty() -> null
+		else -> Content.Image(
+			caption = text,
+			link = eachImage.values.first(),
+		)
 	}
 
 	private fun CssSelector.getValueFromRowWithName(
