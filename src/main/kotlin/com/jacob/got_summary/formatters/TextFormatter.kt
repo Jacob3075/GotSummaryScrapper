@@ -10,7 +10,7 @@ class TextFormatter : Formatter {
         |${data.index}. ${data.title.name} 
         |${data.pov.name} at ${data.place.name} 
         |
-        |${data.content.text}
+        |${data.content.text.joinToString("\n")}
         |${"-".repeat(100)}
         |
         """.trimMargin()

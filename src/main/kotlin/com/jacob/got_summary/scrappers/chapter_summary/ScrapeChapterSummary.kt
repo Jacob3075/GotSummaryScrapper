@@ -22,7 +22,7 @@ class ScrapeChapterSummary : GetChapterSummary {
 			}
 
 			lateinit var title: String
-			lateinit var contentText: String
+			lateinit var contentText: List<String>
 			lateinit var imageLinks: List<String>
 			lateinit var placeName: String
 			lateinit var pov: String
@@ -66,8 +66,8 @@ class ScrapeChapterSummary : GetChapterSummary {
 
 	private fun DocElement.getContentTextFromParaTag() = p {
 		findAll {
-			takeWhile { "Appearing" !in it.text }.joinToString(separator = "\n") {
-				Regex("\\[N \\d+]").replace(it.text, "") // works }
+			takeWhile { "Appearing" !in it.text }.map {
+				Regex("\\[N \\d+]").replace(it.text, "")
 			}
 		}
 	}

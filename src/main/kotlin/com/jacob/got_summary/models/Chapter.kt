@@ -11,7 +11,7 @@ data class Chapter(
 	val pov: Character,
 ) {
 	@Serializable
-	data class Content(val text: String, val imageLinks: List<String>)
+	data class Content(val text: List<String>, val imageLinks: List<String>)
 
 	@Serializable
 	@JvmInline
