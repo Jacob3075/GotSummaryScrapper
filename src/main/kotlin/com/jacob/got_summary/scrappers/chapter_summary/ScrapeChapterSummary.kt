@@ -40,8 +40,8 @@ class ScrapeChapterSummary : GetChapterSummary {
 
 							val allTableRows = th { findAll { this } }
 
-							pov = findRowsWith(allTableRows, "POV")
-							placeName = findRowsWith(allTableRows, "Place")
+							pov = getValueFromRowWithName(allTableRows, "POV")
+							placeName = getValueFromRowWithName(allTableRows, "Place")
 						}
 					}
 
@@ -66,7 +66,7 @@ class ScrapeChapterSummary : GetChapterSummary {
 
 	private fun DocElement.getContentTextFromParaTag() = p {
 		findAll {
-			takeWhile { !it.text.contains("Appearing") }.joinToString(separator = "\n") {
+			takeWhile { "Appearing" !in it.text }.joinToString(separator = "\n") {
 				Regex("\\[N \\d+]").replace(it.text, "") // works }
 			}
 		}
@@ -78,15 +78,15 @@ class ScrapeChapterSummary : GetChapterSummary {
 		}
 	}
 
-	private fun CssSelector.findRowsWith(docElements: List<DocElement>, rowName: String) =
-		docElements.first { it.text.contains(rowName) }
-				.let {
-					it.siblings {
-						td {
-							text
-						}
+	private fun CssSelector.getValueFromRowWithName(
+		docElements: List<DocElement>,
+		rowName: String,
+	) = docElements.first { it.text.contains(rowName) }
+			.let {
+				it.siblings {
+					td {
+						text
 					}
 				}
-
-
+			}
 }
