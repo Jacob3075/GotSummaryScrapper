@@ -34,12 +34,11 @@ class Main(
 			booksWithLinks.forEach { (bookName, chapterLinks) ->
 				chapterLinks.dropLast(1)
 						.mapIndexedParallelChunked(6, getChapterSummary::getChapterSummary)
+						.let { Book(bookName.name, it) }
 						.let {
 							fileWriter.newFile(bookName.name)
 							fileWriter.writeDataToFile(it)
 						}
-
-				TODO()
 			}
 		}
 	}

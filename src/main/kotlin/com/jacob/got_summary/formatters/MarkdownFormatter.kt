@@ -1,26 +1,29 @@
 package com.jacob.got_summary.formatters
 
+import com.jacob.got_summary.models.Book
 import com.jacob.got_summary.models.Chapter
+import org.intellij.lang.annotations.Language
 
 class MarkdownFormatter : Formatter {
 	override val fileExtension: String
 		get() = "md"
 
 	override fun formatData(data: Chapter) = buildString {
-		append(title1("${data.index}. ${data.title.name}"))
-		append("\n")
-		append(body(data.content.text.joinToString("\n")))
+		append(title2("${data.index}. ${data.title.name}"))
+		append(body(data.content.text.joinToString(separator = "\n\n")))
 		append(divider())
 	}
 
-	override fun formatData(data: List<Chapter>): String =
-		data.joinToString(separator = "", transform = ::formatData)
+	override fun formatData(data: Book): String =
+		title1(data.title) + data.chapters.joinToString(separator = "", transform = ::formatData)
 
-	private fun title1(text: String) = """<h1 style="text-align: center;">$text</h1>"""
+	@Language("Markdown")
+	private fun title1(text: String) = "# $text\n\n"
 
-	private fun title2(text: String) = """<h2 style="text-align: center;">$text</h2>"""
+	@Language("Markdown")
+	private fun title2(text: String) = "## $text\n\n"
 
-	private fun body(text: String) = text
+	private fun body(text: String) = "$text\n\n"
 
-	private fun divider() = "\n\n---\n\n"
+	private fun divider() = "---\n\n"
 }

@@ -1,6 +1,7 @@
 package com.jacob.got_summary.writer
 
 import com.jacob.got_summary.formatters.Formatter
+import com.jacob.got_summary.models.Book
 import com.jacob.got_summary.models.Chapter
 import java.io.File
 
@@ -12,7 +13,7 @@ class FileWriter(
 
 	fun appendDataToFile(data: Chapter) = file.appendText(formatter.formatData(data))
 
-	fun writeDataToFile(data: List<Chapter>) = file.writeText(formatter.formatData(data))
+	fun writeDataToFile(data: Book) = file.writeText(formatter.formatData(data))
 
 	fun newFile(fileName: String) {
 		file = File("$directoryPath$fileName.${formatter.fileExtension}")

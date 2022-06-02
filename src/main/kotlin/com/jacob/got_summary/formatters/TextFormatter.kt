@@ -1,5 +1,6 @@
 package com.jacob.got_summary.formatters
 
+import com.jacob.got_summary.models.Book
 import com.jacob.got_summary.models.Chapter
 
 class TextFormatter : Formatter {
@@ -15,6 +16,6 @@ class TextFormatter : Formatter {
         |
         """.trimMargin()
 
-	override fun formatData(data: List<Chapter>): String =
-		data.joinToString(transform = ::formatData)
+	override fun formatData(data: Book): String =
+		data.chapters.joinToString(transform = ::formatData)
 }
