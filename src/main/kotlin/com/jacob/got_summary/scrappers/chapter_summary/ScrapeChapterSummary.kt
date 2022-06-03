@@ -1,6 +1,7 @@
 package com.jacob.got_summary.scrappers.chapter_summary
 
 import com.jacob.got_summary.ChapterLink
+import com.jacob.got_summary.Constants
 import com.jacob.got_summary.models.Chapter
 import com.jacob.got_summary.models.Chapter.Content
 import it.skrape.core.htmlDocument
@@ -77,7 +78,7 @@ class ScrapeChapterSummary : GetChapterSummary {
 		eachImage.values.isEmpty() -> null
 		else -> Content.Image(
 			caption = text,
-			link = eachImage.values.first(),
+			link = "${Constants.BASE_URL}${eachImage.values.first()}",
 		)
 	}
 

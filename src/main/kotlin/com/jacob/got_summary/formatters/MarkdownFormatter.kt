@@ -23,7 +23,7 @@ class MarkdownFormatter : Formatter {
 	@Language("Markdown")
 	private fun getContentText(content: Content): CharSequence = when (content) {
 		is Content.Text -> content.text
-		is Content.Image -> "IMAGE: TODO!"
+		is Content.Image -> imageWithCaption(content.link, content.caption)
 		is Content.Quote -> "> ${content.text}"
 	}
 
@@ -38,4 +38,13 @@ class MarkdownFormatter : Formatter {
 
 	@Language("Markdown")
 	private fun divider() = "---\n\n"
+
+	@Language("Markdown")
+	private fun imageWithCaption(imageLink: String, caption: String) = """
+		<figure>
+		<img src="$imageLink" alt="" style="width:50%">
+		<figcaption><b>$caption</b></figcaption>
+		</figure>
+		
+		""".trimIndent()
 }
