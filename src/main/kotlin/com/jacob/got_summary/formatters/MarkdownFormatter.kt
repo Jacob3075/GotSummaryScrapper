@@ -9,42 +9,71 @@ class MarkdownFormatter : Formatter {
 	override val fileExtension: String
 		get() = "md"
 
-	override fun formatData(data: Chapter) = buildString {
-		append(title2("${data.index}. ${data.title.name}"))
+	override fun formatData(data: Chapter) = """
+		|${chapterTitle(data)}
+		|${
 		data.content.joinToString(separator = "\n\n", transform = ::getContentText)
 				.let(::body)
-				.let<String, StringBuilder>(::append)
-		append(divider())
 	}
+		|${divider()}
+		|""".trimIndent()
+			.trimMargin()
 
 	override fun formatData(data: Book): String =
-		title1(data.title) + data.chapters.joinToString(separator = "", transform = ::formatData)
+		title(data.title) + tableOfContents(data.chapters) + data.chapters.joinToString(
+			separator = "",
+			transform = ::formatData
+		)
 
 	@Language("Markdown")
-	private fun getContentText(content: Content): CharSequence = when (content) {
+	private fun getContentText(content: Content) = when (content) {
 		is Content.Text -> content.text
 		is Content.Image -> imageWithCaption(content.link, content.caption)
 		is Content.Quote -> "> ${content.text}"
 	}
 
 	@Language("Markdown")
-	private fun title1(text: String) = "# $text\n\n"
+	private fun title(text: String) = "# $text\n\n"
 
 	@Language("Markdown")
-	private fun title2(text: String) = "## $text\n\n"
+	private fun chapterTitle(chapter: Chapter) = """
+		|<div id="${chapter.title.linkName}"> </div>
+		|
+		|## ${chapter.index}. ${chapter.title.name}
+		|""".trimIndent()
+			.trimMargin()
 
 	@Language("Markdown")
-	private fun body(text: String) = "$text\n\n"
+	private fun body(text: String) = "$text\n"
 
-	@Language("Markdown")
-	private fun divider() = "---\n\n"
-
-	@Language("Markdown")
+	@Language("HTML")
 	private fun imageWithCaption(imageLink: String, caption: String) = """
 		<figure>
 		<img src="$imageLink" alt="" style="width:50%">
 		<figcaption><b>$caption</b></figcaption>
 		</figure>
-		
 		""".trimIndent()
+
+	@Language("Markdown")
+	private fun tableOfContents(chapters: List<Chapter>): String = """
+		|${divider()}
+		|## Table of Contents
+		|
+		|${chapters.joinToString("\n", transform = ::createListItem)}	
+		|${divider()}
+		|""".trimIndent()
+			.trimMargin()
+
+	@Language("Markdown")
+	private fun createListItem(chapter: Chapter): String = """
+		|${chapter.index}. [${chapter.title.name}](#${chapter.title.linkName})
+		|""".trimIndent()
+			.trimMargin()
+
+	@Language("Markdown")
+	private fun divider() = "---\n"
+
+	private val Chapter.Title.linkName: String
+		get() = name.lowercase()
+				.replace(" ", "_")
 }
