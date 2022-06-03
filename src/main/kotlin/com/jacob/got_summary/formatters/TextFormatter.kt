@@ -7,15 +7,15 @@ class TextFormatter : Formatter {
 	override val fileExtension: String
 		get() = "txt"
 
-	override fun formatData(data: Chapter): String = """
+	override fun formatData(data: Book): String =
+		data.chapters.joinToString(transform = ::formatData)
+
+	private fun formatData(data: Chapter): String = """
         |${data.index}. ${data.title.name} 
         |${data.pov.name} at ${data.place.name} 
         |
         |${data.content}
         |${"-".repeat(100)}
         |
-        """.trimMargin()
-
-	override fun formatData(data: Book): String =
-		data.chapters.joinToString(transform = ::formatData)
+        |""".trimMargin()
 }

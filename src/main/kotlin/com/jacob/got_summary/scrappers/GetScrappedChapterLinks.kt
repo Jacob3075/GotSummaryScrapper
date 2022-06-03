@@ -1,4 +1,4 @@
-package com.jacob.got_summary.scrappers.chapter_links
+package com.jacob.got_summary.scrappers
 
 import com.jacob.got_summary.Constants.BASE_URL
 import it.skrape.core.htmlDocument
@@ -11,8 +11,8 @@ import it.skrape.selects.html5.div
 import it.skrape.selects.html5.li
 import it.skrape.selects.html5.ol
 
-class GetScrappedChapterLinks : GetChapterLinks {
-	override fun getLinks(): List<String> = skrape(HttpFetcher) {
+class GetScrappedChapterLinks {
+	fun getLinks(): List<String> = skrape(HttpFetcher) {
 		request {
 			url = "$BASE_URL/index.php/Chapters#A_Game_of_Thrones"
 		}

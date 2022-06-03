@@ -1,4 +1,4 @@
-package com.jacob.got_summary.scrappers.chapter_summary
+package com.jacob.got_summary.scrappers
 
 import com.jacob.got_summary.ChapterLink
 import com.jacob.got_summary.Constants
@@ -13,8 +13,8 @@ import it.skrape.selects.DocElement
 import it.skrape.selects.html5.*
 import it.skrape.selects.text
 
-class ScrapeChapterSummary : GetChapterSummary {
-	override fun getChapterSummary(index: Int, chapterLink: ChapterLink): Chapter =
+class ScrapeChapterSummary {
+	fun getChapterSummary(index: Int, chapterLink: ChapterLink): Chapter =
 		skrape(HttpFetcher) {
 			println("START $index")
 			request {

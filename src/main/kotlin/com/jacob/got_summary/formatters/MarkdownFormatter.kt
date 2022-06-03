@@ -9,7 +9,13 @@ class MarkdownFormatter : Formatter {
 	override val fileExtension: String
 		get() = "md"
 
-	override fun formatData(data: Chapter) = """
+	override fun formatData(data: Book): String =
+		title(data.title) + tableOfContents(data.chapters) + data.chapters.joinToString(
+			separator = "",
+			transform = ::formatData
+		)
+
+	private fun formatData(data: Chapter) = """
 		|${chapterTitle(data)}
 		|${
 		data.content.joinToString(separator = "\n\n", transform = ::getContentText)
@@ -18,12 +24,6 @@ class MarkdownFormatter : Formatter {
 		|${divider()}
 		|""".trimIndent()
 			.trimMargin()
-
-	override fun formatData(data: Book): String =
-		title(data.title) + tableOfContents(data.chapters) + data.chapters.joinToString(
-			separator = "",
-			transform = ::formatData
-		)
 
 	@Language("Markdown")
 	private fun getContentText(content: Content) = when (content) {
